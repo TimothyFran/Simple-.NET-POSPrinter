@@ -1,4 +1,4 @@
-﻿'*********************************************************************
+'*********************************************************************
 ' LIBRARY NAME: Simple .NET POSPrinter
 ' DESCRIPTION:  This is a VB.NET library that can be used to easily manage a thermal printer
 '               without using ESC/POS commands.
@@ -7,7 +7,7 @@
 ' AUTHOR: Timothy Franceschi
 ' COPYRIGHT: © 2023 Timothy Franceschi
 ' LICENSE: MIT License
-' VERSION: 1.0.0
+' VERSION: 2.0.0
 '*********************************************************************
 
 
@@ -137,8 +137,10 @@ Public Class POSPrinter
         'Calcola dimensioni testo
         Dim textSize As SizeF = e.Graphics.MeasureString(testo, myFont)
 
+        Dim freeSpace As Single = e.PageSettings.PaperSize.Width - textSize.Width
+
         'Calcola coordinata X del testo
-        Dim centerX As Single = e.MarginBounds.Left + ((e.MarginBounds.Width - textSize.Width) / 2)
+        Dim centerX As Single = ((e.PageSettings.PaperSize.Width - textSize.Width) / 2) - (e.PageSettings.Margins.Left / 2)
 
         Return New PointF(centerX, myPoint.Y)
 
@@ -146,13 +148,15 @@ Public Class POSPrinter
 
     Private Function RightPosition(testo As String) As PointF
 
-        ' Calcola le dimensioni del testo con il font specificato.
+        'Calcola dimensioni testo
         Dim textSize As SizeF = e.Graphics.MeasureString(testo, myFont)
 
-        ' Calcola le coordinate del punto di partenza per allineare il testo a destra nell'area di stampa.
-        Dim rightX As Single = e.MarginBounds.Right - textSize.Width
+        Dim freeSpace As Single = e.PageSettings.PaperSize.Width - textSize.Width
 
-        Return New PointF(rightX, myPoint.Y)
+        'Calcola coordinata X del testo
+        Dim centerX As Single = ((e.PageSettings.PaperSize.Width - textSize.Width) / 2)
+
+        Return New PointF(centerX, myPoint.Y)
 
     End Function
 
